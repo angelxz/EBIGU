@@ -6,8 +6,19 @@
 
 
 ## Installation
-
 You can either just clone the source code or download a compiled version [here](compiled/)
+
+## Usage
+Just open your .ebigu file with the EBIGU.py or EBIGU.exe
+```bash
+py EBIGU.py hello_world.ebigu
+EBIGU.exe hello_world.ebigu
+```
+
+If you specify a thirt parameter (a python file) the source code will be translated and written in that file. (rather than executed)
+```bash
+py EBIGU.py hello_world.ebigu my_cool_file.py
+```
 
 ## Contributing
 I am 100% open for any ideas and contibutions :D
