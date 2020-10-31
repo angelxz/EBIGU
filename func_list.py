@@ -168,7 +168,7 @@ def get_func_list():
         },
         {
             # Moves a sprite by the amount pixels given
-            'func': f.move_with,
+            'func': f.move_by,
             'pattern': re.compile(r'mrudni (?P<sprite>\w+?) s \((?P<x>.+?), (?P<y>.+?)\)\n')
         },
         {
@@ -196,7 +196,7 @@ def get_func_list():
         {
             # Gets you the size of a hero object (sprite)
             'func': f.get_size,
-            'pattern': re.compile(r'golemina (?P<sprite>\w+?)\n')
+            'pattern': re.compile(r'golemina na (?P<sprite>\w+?)\n')
         },
 
         # ---------- Animations -----------
@@ -260,12 +260,12 @@ def get_func_list():
         {
             # Pauses the izteklo_vreme variable
             'func': f.pause_clock,
-            'pattern': re.compile(r'sloji chasovnika na pauza\n')
+            'pattern': re.compile(r'pauzirai chasovnika\n')
         },
         {
             # Resets the izteklo_vreme variable (time elapsed since the start of the game)
             'func': f.reset_clock,
-            'pattern': re.compile(r'sloji chasovnika na nula\n')
+            'pattern': re.compile(r'nulirai chasovnika\n')
         },
         {
             # Shows the cursor

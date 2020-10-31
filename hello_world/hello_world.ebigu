@@ -82,7 +82,6 @@ osnoven cikul:
 	globalni sled_posledno_strelqne, skorost_lazer, skorost_vrag, sustoqnie, igrai_text_plesnat, pauza_text_plesnat, krai_text_plesnat, igrai_text, pauza_text, igrai_buton, pauza_buton, izlez_buton, igrach, krai_text, pravougulnik, lazer, tochki, tochki_text
 
 	ako sustoqnie e 'Igra':
-		izpishi(izteklo_vreme)
 		animirai igrach_idle na igrach
 		animirai exploziq_animaciq na grupa explozii
 
@@ -165,7 +164,7 @@ osnoven cikul:
 			krai na igrata
 	ako li puk sustoqnie e 'Pauza':
 		ako ne pauza_text_plesnat:
-			sloji chasovnika na pauza
+			pauzirai chasovnika
 			pokazhi kursora
 			zavurti igrach s 90 gradusa
 			napravi igrach (100, 100)
@@ -210,7 +209,7 @@ osnoven cikul:
 			mahni tochki_text
 			tochki_text = nov text 'Score:0' s font maluk_font i cvqt #ffffff
 			plesni tochki_text na (SCREEN_WIDTH - 80, 20)
-			sloji chasovnika na nula
+			nulirai chasovnika
 			sustoqnie = 'Igra'
 		ako li puk buton izlez_buton e kliknat ili K_ESCAPE e natisnat:
 			krai na igrata

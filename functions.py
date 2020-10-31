@@ -101,7 +101,7 @@ def init_game(width, height):
         '\t\tsprite_group.add(self)\n'
         '\tdef destroy(self):\n'
         '\t\tself.kill()\n'
-        '\tdef move_with(self, x, y):\n'
+        '\tdef move_by(self, x, y):\n'
         '\t\tself.rect.move_ip(x, y)\n'
         '\tdef move(self, x, y):\n'
         '\t\tself.rect.centerx = x\n'
@@ -410,9 +410,9 @@ def move(sprite, x, y):
     return py_code
 
 
-def move_with(sprite, x, y):
+def move_by(sprite, x, y):
     py_code = (
-        f'{sprite}.move_with({x}, {y})\n'
+        f'{sprite}.move_by({x}, {y})\n'
     )
 
     return py_code
