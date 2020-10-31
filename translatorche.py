@@ -1,6 +1,6 @@
 '''
- Translates the EBIGU tokens into Python tokens
- using the token dictionary
+Translates the EBIGU tokens into Python tokens
+using the token dictionary
 '''
 
 import re

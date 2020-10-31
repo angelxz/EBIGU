@@ -138,5 +138,5 @@ dmypy.json
 cython_debug/
 
 # Other stuff
-*.ebigu
 py-to-exe.txt
+icon.ico

@@ -1,0 +1,218 @@
+izpishi('Zdravei Svqt')
+
+prozorcheto da mi bude (1280, 720)
+ikonkata da mi bude assets/ship/ship_1.png
+igrata mi se kazva 'Space Invaders 2.0'
+nadqvam se igrata mi da vurvi s 30 fps
+fonut da mi bude assets/background.png
+# skrii kursora
+
+pei assets/music/" + str(sluchaino(1, 12)) + ".mp3
+pei s 0.8 zvuk
+
+golemina_igrach = 64
+skorost_na_igrach = 20
+igrach = nov geroi s golemina (golemina_igrach, golemina_igrach) i sprite assets/ship/ship_1.png
+plesni igrach na (CENTER[0], SCREEN_HEIGHT - 100)
+igrach_idle = nova animaciq na igrach ot assets/ship
+
+lazeri = nova grupa
+lazer = nov geroi s golemina (16, 32) i sprite assets/laser.png
+skorost_lazer = -30
+lazer_zvuk = nov zvuk assets/laser.wav
+izpeivai lazer_zvuk s 1.2 zvuk
+sled_posledno_strelqne = 0
+
+vragove = nova grupa
+ufo = nov geroi s golemina (64, 64) i sprite assets/ufo/ufo_1.png
+skorost_vrag = 3
+RODI_VRAG = novo subitie
+prez 1000 ms RODI_VRAG
+
+explozii = nova grupa
+exploziq = nov geroi s golemina (90, 90) i sprite assets/explosion/explosion_1.png
+
+pravougulnik = nov geroi s golemina (40, 40) i sprite krugche s cvqt #ffffff
+plesni pravougulnik na (0, 0)
+
+golqm_font = nov font assets/joystix.ttf s golemina 120
+maluk_font = nov font assets/joystix.ttf s golemina 24
+
+igrai_text = nov text 'Play' s font golqm_font i cvqt #ffffff
+pauza_text = nov text 'Paused' s font golqm_font i cvqt #ffffff
+krai_text = nov text 'Game Over' s font golqm_font i cvqt #ffffff
+tochki_text = nov text 'Score:0' s font maluk_font i cvqt #ffffff
+
+plesni tochki_text na (SCREEN_WIDTH - 80, 20)
+
+igrai_buton = nov buton 'Play' s cvqt #ffffff i fonov cvqt #471c0c i cvqt #a1573b pod kursora i font maluk_font i golemina (100, 50)
+izlez_buton = nov buton 'Quit' s cvqt #ffffff i fonov cvqt #471c0c i cvqt #a1573b pod kursora i font maluk_font i golemina (100, 50)
+
+igrai_text_plesnat = greshno
+pauza_text_plesnat = greshno
+krai_text_plesnat = greshno
+
+sustoqnie = 'Nachalo'
+tochki = 0
+
+kogato izvikam mrudni_igrach(nakude):
+	globalni igrach, skorost_na_igrach, golemina_igrach
+
+	poziciq_igrach = poziciq na igrach
+
+	ako poziciq_igrach[0] <= 0:
+		mrudni igrach s (skorost_na_igrach, 0)
+	ako li puk poziciq_igrach[0] >= SCREEN_WIDTH:
+		mrudni igrach s (skorost_na_igrach * -1, 0)
+
+	ako nakude e 'nalqvo':
+		mrudni igrach s (skorost_na_igrach * -1, 0)
+	ako li puk nakude e 'nadqsno':
+		mrudni igrach s (skorost_na_igrach, 0)
+
+kogato izvikam strelqi():
+	globalni lazer, igrach, lazeri
+
+	poziciq_igrach = poziciq na igrach
+
+	dobavi lazer v lazeri i go plesni na (poziciq_igrach[0], poziciq_igrach[1])
+	izpei lazer_zvuk
+
+osnoven cikul:
+	globalni sled_posledno_strelqne, skorost_lazer, skorost_vrag, sustoqnie, igrai_text_plesnat, pauza_text_plesnat, krai_text_plesnat, igrai_text, pauza_text, igrai_buton, pauza_buton, izlez_buton, igrach, krai_text, pravougulnik, lazer, tochki, tochki_text
+
+	ako sustoqnie e 'Igra':
+		animirai igrach_idle na igrach
+		animirai exploziq_animaciq na grupa explozii
+
+		animirai ufo_idle na grupa vragove
+		sled_posledno_strelqne += dt
+
+		poz_mishka = poziciq na mishkata
+		mrudni pravougulnik na (poz_mishka[0], poz_mishka[1])
+
+		skorost_vrag = 3 + izteklo_vreme / 20
+
+		ako mishkata murda:
+			skorost_vrag += 0.1
+
+		ako K_LEFT e natisnat:
+			mrudni_igrach('nalqvo')
+		ako li puk K_RIGHT e natisnat:
+			mrudni_igrach('nadqsno')
+		ako li puk K_ESCAPE e natisnat ili mishkata e cuknata:
+			sustoqnie = 'Pauza'
+
+		ako sled_posledno_strelqne > 0.3 i K_SPACE e natisnat:
+			sled_posledno_strelqne = 0
+			strelqi()
+
+		za lazerche v lazeri:
+			poziciq_lazerche = poziciq na lazerche
+			ako poziciq_lazerche[1] - 20 < 0:
+				mahni lazerche
+			inache:
+				mrudni lazerche s (0, skorost_lazer)
+
+		ako subitie RODI_VRAG:
+			sluchaino_x = sluchaino(30, SCREEN_WIDTH - 30)
+			sluchaino_y = sluchaino(-300, -50)
+			dobavi ufo v vragove i go plesni na (sluchaino_x, sluchaino_y)
+			ufo_idle = nova animaciq na ufo ot assets/ufo
+
+		vragut_umre = greshno
+		za vrag v vragove:
+			poziciq_vrag = poziciq na vrag
+			za lazerche v lazeri:
+				ako lazerche se blusne s vrag:
+					dobavi exploziq v explozii i go plesni na (poziciq_vrag[0], poziciq_vrag[1])
+					exploziq_animaciq = nova animaciq na exploziq ot assets/explosion
+					# mahni vrag ot vragove
+					mahni vrag
+					mahni lazerche
+					vragut_umre = vqrno
+					tochki += 10
+					mahni tochki_text
+					tochki_text = nov text 'Score:' + str(tochki) s font maluk_font i cvqt #ffffff
+					plesni tochki_text na (SCREEN_WIDTH - (len(str(tochki)) * 8 + 80), 20)
+					prekrati
+			ako vragut_umre:
+				vragut_umre = greshno
+				prekrati
+			ako poziciq_vrag[1] > SCREEN_HEIGHT - 120:
+				sustoqnie = 'Krai'
+			mrudni vrag s (0, skorost_vrag)
+
+		za exploziq v explozii:
+			ako exploziq.index e 11:
+				mahni exploziq
+	ako li puk sustoqnie e 'Nachalo':
+		ako ne igrai_text_plesnat:
+			igrai_text_plesnat = vqrno
+			plesni igrai_text na (CENTER[0], 200)
+			plesni igrai_buton na (CENTER[0] - 100, 500)
+			plesni izlez_buton na (CENTER[0] + 100, 500)
+		ako buton igrai_buton e kliknat ili K_RETURN e natisnat:
+			pusni chasovnika
+			skrii kursora
+			mahni igrai_text
+			mahni igrai_buton
+			mahni izlez_buton
+			sustoqnie = 'Igra'
+			igrai_text_plesnat = greshno
+		ako li puk buton izlez_buton e kliknat ili K_ESCAPE e natisnat:
+			krai na igrata
+	ako li puk sustoqnie e 'Pauza':
+		ako ne pauza_text_plesnat:
+			sloji chasovnika na pauza
+			pokazhi kursora
+			zavurti igrach s 90 gradusa
+			napravi igrach (100, 100)
+			pauzirai peeneto
+			pauza_text_plesnat = vqrno
+			plesni pauza_text na (CENTER[0], 200)
+			plesni igrai_buton na (CENTER[0] - 100, 500)
+			plesni izlez_buton na (CENTER[0] + 100, 500)
+		ako buton igrai_buton e kliknat ili K_RETURN e natisnat:
+			pusni chasovnika
+			skrii kursora
+			otpauzirai peeneto
+			mahni pauza_text
+			mahni igrai_buton
+			mahni izlez_buton
+			sustoqnie = 'Igra'
+			pauza_text_plesnat = greshno
+		ako li puk buton izlez_buton e kliknat:
+			krai na igrata
+	ako li puk sustoqnie e 'Krai':
+		ako ne krai_text_plesnat:
+			pokazhi kursora
+			q zemi se sopri s tva tvoe peene
+			krai_text_plesnat = vqrno
+			plesni krai_text na (CENTER[0], 200)
+			plesni igrai_buton na (CENTER[0] - 100, 500)
+			plesni izlez_buton na (CENTER[0] + 100, 500)
+		ako buton igrai_buton e kliknat ili K_RETURN e natisnat:
+			pei assets/music/" + str(sluchaino(1, 12)) + ".mp3
+			skrii kursora
+			krai_text_plesnat = greshno
+			mahni krai_text
+			mahni igrai_buton
+			mahni izlez_buton
+			# mahni igrach
+			mrudni igrach na (CENTER[0], SCREEN_HEIGHT - 100)
+			skorost_vragove = 3
+			izprazni grupa vragove
+			izprazni grupa lazeri
+			izprazni grupa explozii
+			tochki = 0
+			mahni tochki_text
+			tochki_text = nov text 'Score:0' s font maluk_font i cvqt #ffffff
+			plesni tochki_text na (SCREEN_WIDTH - 80, 20)
+			sloji chasovnika na nula
+			sustoqnie = 'Igra'
+		ako li puk buton izlez_buton e kliknat ili K_ESCAPE e natisnat:
+			krai na igrata
+			
+
+dobra igra
