@@ -7,7 +7,7 @@
 
 ## Installation
 
-You can either just clone the source code or download the binaries in from the repo
+You can either just clone the source code or download a compiled version [here](compiled/)
 
 ## Contributing
 I am 100% open for any ideas and contibutions :D
