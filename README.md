@@ -1,13 +1,24 @@
 # EBIGU
 
-### aka Extraordinary Basically Ingenious Gamemaking Utility is a simple "programming language" which I wrote in python for exactly 3 days xD It is mainly made for creating 2D games (using pygame as a base). Oh yes, and it is in Bulgarian :bg_flag: :D (not in cyrillic though)
+### EBIGU [ibígu] aka Extraordinary Basically Ingenious Gamemaking Utility is a simple "programming language" which I wrote in python for exactly 3 days xD It is mainly made for creating 2D games (using pygame as a base). Oh yes, and it is in Bulgarian :D (not in cyrillic though)
 
 ### You can also write pure python in .ebigu files and mix it with EBIGU, no probs
 
 
 ## Installation
+You can either just clone the source code or download a compiled version from [the latest release](https://github.com/angelxz/EBIGU/releases/latest)
 
-You can either just clone the source code or download a compiled version [here](compiled/)
+## Usage
+Just open your .ebigu file with the EBIGU.py or EBIGU.exe
+```bash
+py EBIGU.py hello_world.ebigu
+EBIGU.exe hello_world.ebigu
+```
+
+If you specify a thirt parameter (a python file) the source code will be translated and written in that file. (rather than executed)
+```bash
+py EBIGU.py hello_world.ebigu my_cool_file.py
+```
 
 ## Contributing
 I am 100% open for any ideas and contibutions :D
@@ -16,7 +27,7 @@ I am 100% open for any ideas and contibutions :D
 ```eibgu
 izpishi('Zdravei Svqt')
 ```
-If ya wan't a more thorough hello world check out the hello_world folder in the repo. It is a simple af game which I wrote in the process of testing the language, perfect to get ya started. Btw, the assets are just some stuff I downloaded from the Internet so be careful with copyright and stuff if you intend to use them.
+If ya wan't a more thorough hello world check out the [hello_world folder](hello_world/) in the repo. It is a simple af game which I wrote in the process of testing the language, perfect to get ya started. Btw, the assets are just some stuff I downloaded from the Internet so be careful with copyright and stuff if you intend to use them.
 
 # The Docs
 The official documentation of EBIGU :D
@@ -29,34 +40,37 @@ listche = [1, 2, 3]
 If else statement:
 ```eibgu
 ako kon e 'Mustang' ili 3 ne v listche:          # if kon == 'Mustang' or 3 not in listche
-    ne pravi nishto                              # pass
+	ne pravi nishto                              # pass
 ako li puk kon ne e 'Pesho' i kon ne e 'Gosho':  # elif kon != 'Pesho' and kon != 'Gosho'
-    izpishi('Kude li sa Pesho i Gosho')          # print
+	izpishi('Kude li sa Pesho i Gosho')          # print
 inache:                                          # else
-    ne_znam = vqrno                              # vqrno -> False, nevqrno -> True
+	ne_znam = vqrno                              # vqrno -> False, nevqrno -> True
+
+# BTW the tabs are important... Just sayin'
+# And they have to tabs tabs, not spaces
 ```
 Loops:
 ```eibgu
 za l v obseg(30):              # for l in range(30)
-    izpishi(l)
+	izpishi(l)
 
 broqch = 0
 dokato vqrno:                  # while True
-    ako broqch e 31:
-        preskochi              # continue
+	ako broqch e 31:
+		preskochi              # continue
     ako li puk broqch e 100:
-        schupi                 # break
+		schupi                 # break
     inache:
-        izpishi(broqch)
+		izpishi(broqch)
 ```
 Functions:
 ```eibgu
 kato izvikam kvo_staa(na_kef_sum):       # def kvo_staa(na_kef_sum):
-    globalni nqkva_globalna_promenliva   # global nqkva_globalna_promenliva
-    ako na_kef_sum e vqrno:
-        izpishi('Na kef sum')
+	globalni nqkva_globalna_promenliva   # global nqkva_globalna_promenliva
+	ako na_kef_sum e vqrno:
+		izpishi('Na kef sum')
     inache:
-        vurni                             # return
+		vurni                             # return
 ```
 Comments:
 ```eibgu
@@ -86,6 +100,7 @@ igrata mi se kazva 'Nai qkata igra na zemqta'
 ```
 Set desired fps:
 ```eibgu
+# Default is 30 (you don't really need to set this)
 nadqvam se igrata mi da vurvi s 60 fps
 ```
 Set background (colors can be either in hex or rgb values):
@@ -100,43 +115,43 @@ fonut da mu bude #ffffff
 Check if mouse has been clicked:
 ```eibgu
 ako mishkata e cuknata:
-    ...
+	...
 ```
 Check if the mouse is currently in motion:
 ```eibgu
 ako mishkata murda:
-    ...
+	...
 ```
 Check if the button specified has been clicked:
 ```eibgu
 ako nqkuv_qk_buton e kliknat:
-    ...
+	...
 ```
 Check if a certain key is pressed:
 (you can find the full list of key names [here](https://www.pygame.org/docs/ref/key.html))
 ```eibgu
 ako K_UP e natisnat:
-    ...
+	...
 ```
 Collision detection between two sprites (aka heroes):
 ```eibgu
 ako sprite1 se blusne s sprite2:
-    ...
+	...
 ```
 Collision detection between a sprite and a group of sprites:
 ```eibgu
 ako sprite se blusne s neshto ot group:
-    ...
+	...
 ```
 Check if a sprite (aka hero) is outside the window boundaries:
 ```eibgu
 ako sprite izleze ot poleto:
-    ...
+	...
 ```
 Check if an event is happening:
 ```eibgu
 ako subitie NQKAKVO_SUBITIE:
-    ...
+	...
 ```
 Create a new hero object (sprite):
 ```eibgu
@@ -224,7 +239,7 @@ zavurti igrach s 90 gradusa
 ```
 
 ### Some useful get actions
-Get current mouse position (works only in osnoven cikul):
+Get current mouse position (works only in "osnoven cikul"):
 ```eibgu
 poz_mishka = poziciq na mishkata
 ```
@@ -238,10 +253,10 @@ golemina_igrach = golemina na igrach
 ```
 
 ### Animations
-Add an animation to a sprite (the sprite has to be first drawn):
+Add an animation to a sprite (the sprite has to be first "plesnat" (drawn)):
 ```eibgu
 # The folder has to consist of the animation's images only
-# and they should be numbered
+# and they should be numbered in the right order
 igrach_animaciq = nova animaciq na igrach ot ./path/to/folder
 ```
 Play animation:
@@ -282,8 +297,10 @@ Post an event every n amount of milleseconds:
 ```ebigu
 prez 2000 ms RODI_VRAG
 ```
-Start the counting elapsed time (the izminalo_vreme var):
+Start counting the elapsed time (the izminalo_vreme var):
 ```ebigu
+# All the clock actions work only in the "osnoven cikul" aka the main game loop
+# Also by default the clock is not counting
 pusni chasovnika
 ```
 Pause the counting of elapsed time:
@@ -306,7 +323,7 @@ skrii kursora
 ### The main game loop function
 ```ebigu
 osnoven cikul:
-    ...
+	...
 ```
 
 ### Quit game
@@ -320,6 +337,31 @@ krai na igrata
 ```ebigu
 # This is the final line of my beautiful game!
 dobra igra
+```
+
+### Special variables
+Screen width and height:
+```ebigu
+SHIRINA_EKRAN    # -> gives you the width of the screen
+VISOCHINA_EKRAN  # -> gives you the height of the screen
+```
+Center of the screen:
+```ebigu
+CENTER  # -> [centerx, centery]
+```
+The set fps:
+```ebigu
+FPS  # -> a number (what you have set or the default 30)
+```
+Time elapsed since you started the clock:
+```ebigu
+# Can only be accessed from the "osnoven cikul"
+izteklo_vreme  # -> gives you the number of seconds elapsed since the clock was started
+```
+Time elapsed between each loop in the "osnoven cikul" aka the main game loop:
+```ebigu
+# Can only be accessed from the "osnoven cikul"
+dt  # -> gives you the number of seconds elapsed between each loop
 ```
 
 Feel free to add more features and happy codin'!
