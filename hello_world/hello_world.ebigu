@@ -1,190 +1,305 @@
+# Print hello world
 izpishi('Zdravei Svqt')
 
+# Initializing pygame and setting up window height and width
 prozorcheto da mi bude (1280, 720)
-ikonkata da mi bude assets/ship/ship_1.png
-igrata mi se kazva 'Space Invaders 2.0'
-nadqvam se igrata mi da vurvi s 30 fps
-fonut da mi bude assets/background.png
-# skrii kursora
 
+# Setting window icon
+ikonkata da mi bude assets/ship/ship_1.png
+
+# Setting window caption (title)
+igrata mi se kazva 'Space Invaders 2.0'
+
+# Setting desired fps (30 is the default)
+nadqvam se igrata mi da vurvi s 30 fps
+
+# Setting the background
+fonut da mi bude assets/background.png
+
+# Play random music from /music and set volume to 0.8
 pei assets/music/" + str(sluchaino(1, 12)) + ".mp3
 pei s 0.8 zvuk
 
+# Creating the player sprite/hero
 golemina_igrach = 64
 skorost_na_igrach = 20
 igrach = nov geroi s golemina (golemina_igrach, golemina_igrach) i sprite assets/ship/ship_1.png
+
+# Drawing player
 plesni igrach na (CENTER[0], SCREEN_HEIGHT - 100)
+# Creating his idle animation
 igrach_idle = nova animaciq na igrach ot assets/ship
 
+# Creating the lasers group
 lazeri = nova grupa
+
+# Creating the laser sprite/hero
 lazer = nov geroi s golemina (16, 32) i sprite assets/laser.png
 skorost_lazer = -30
+
+# Loading the laser sound and setting it to 1.2 volume
 lazer_zvuk = nov zvuk assets/laser.wav
 izpeivai lazer_zvuk s 1.2 zvuk
+
+# This var keeps track of shooting speed
 sled_posledno_strelqne = 0
 
+# Creating the enemies (group and sprite/hero)
 vragove = nova grupa
 ufo = nov geroi s golemina (64, 64) i sprite assets/ufo/ufo_1.png
 skorost_vrag = 3
+
+# Creating the RODI_VRAG event
 RODI_VRAG = novo subitie
+# and making it to happen every second
+# this will keep track of enemy spawning
 prez 1000 ms RODI_VRAG
 
+# Creting the explosions group and sprite
 explozii = nova grupa
 exploziq = nov geroi s golemina (90, 90) i sprite assets/explosion/explosion_1.png
 
+# Creating and drawing a circle... (was for testing purposes)
 pravougulnik = nov geroi s golemina (40, 40) i sprite krugche s cvqt #ffffff
 plesni pravougulnik na (0, 0)
 
+# Creating the big and small fonts
 golqm_font = nov font assets/joystix.ttf s golemina 120
 maluk_font = nov font assets/joystix.ttf s golemina 24
 
+# Creating all the texts
 igrai_text = nov text 'Play' s font golqm_font i cvqt #ffffff
 pauza_text = nov text 'Paused' s font golqm_font i cvqt #ffffff
 krai_text = nov text 'Game Over' s font golqm_font i cvqt #ffffff
 tochki_text = nov text 'Score:0' s font maluk_font i cvqt #ffffff
 
+# Drawing the text with the score on the screen
 plesni tochki_text na (SCREEN_WIDTH - 80, 20)
 
+# Creating the play and quit buttons
 igrai_buton = nov buton 'Play' s cvqt #ffffff i fonov cvqt #471c0c i cvqt #a1573b pod kursora i font maluk_font i golemina (100, 50)
 izlez_buton = nov buton 'Quit' s cvqt #ffffff i fonov cvqt #471c0c i cvqt #a1573b pod kursora i font maluk_font i golemina (100, 50)
 
+# Initializing some vars which will keep track of texts
 igrai_text_plesnat = greshno
 pauza_text_plesnat = greshno
 krai_text_plesnat = greshno
 
+# Setting the state to 'Nachalo' aka game not started yet, in menu
 sustoqnie = 'Nachalo'
+# Setting score to 0
 tochki = 0
 
+# Defining a new function which moves the player left or right
 kogato izvikam mrudni_igrach(nakude):
 	globalni igrach, skorost_na_igrach, golemina_igrach
 
+	# Getting the position of the player
 	poziciq_igrach = poziciq na igrach
 
+	# Checking if the player is outside window boundaries
 	ako poziciq_igrach[0] <= 0:
 		mrudni igrach s (skorost_na_igrach, 0)
 	ako li puk poziciq_igrach[0] >= SCREEN_WIDTH:
 		mrudni igrach s (skorost_na_igrach * -1, 0)
 
+	# Actually moving the player right or left depending on the argument
 	ako nakude e 'nalqvo':
 		mrudni igrach s (skorost_na_igrach * -1, 0)
 	ako li puk nakude e 'nadqsno':
 		mrudni igrach s (skorost_na_igrach, 0)
 
+# Defining the shoot function
 kogato izvikam strelqi():
 	globalni lazer, igrach, lazeri
 
+	# Getting the position of the player
 	poziciq_igrach = poziciq na igrach
 
+	# Adding a 'lazer' to the 'lazeri' group and placing it on the player's position
 	dobavi lazer v lazeri i go plesni na (poziciq_igrach[0], poziciq_igrach[1])
+	# Playing the laser sound
 	izpei lazer_zvuk
 
+# The main game loop
 osnoven cikul:
 	globalni sled_posledno_strelqne, skorost_lazer, skorost_vrag, sustoqnie, igrai_text_plesnat, pauza_text_plesnat, krai_text_plesnat, igrai_text, pauza_text, igrai_buton, pauza_buton, izlez_buton, igrach, krai_text, pravougulnik, lazer, tochki, tochki_text
 
+	# Check if state is 'Igra' aka playing
 	ako sustoqnie e 'Igra':
+		# Playing the animations on player and the 'explozii' group
 		animirai igrach_idle na igrach
 		animirai exploziq_animaciq na grupa explozii
 
+		# Playing the animation on the 'vragove' group
 		animirai ufo_idle na grupa vragove
+
+		# Adding the number of seconds elapsed between the last and this loop
 		sled_posledno_strelqne += dt
 
+		# Getting the position of the cursor and moving 'provougulnik' at the samo coordinates
 		poz_mishka = poziciq na mishkata
 		mrudni pravougulnik na (poz_mishka[0], poz_mishka[1])
 
+		# Increasing the enemies speed with time
 		skorost_vrag = 3 + izteklo_vreme / 20
 
+		# Increasing the speed of the enemies if the cursor is moving
 		ako mishkata murda:
 			skorost_vrag += 0.1
 
+		# If left arrow is pressed
 		ako K_LEFT e natisnat:
+			# Move player left
 			mrudni_igrach('nalqvo')
+		# If right arrow is pressed
 		ako li puk K_RIGHT e natisnat:
+			# Move player right
 			mrudni_igrach('nadqsno')
+		# If escape is pressed or the mouse is clicked change state to 'Pauza' aka pause
 		ako li puk K_ESCAPE e natisnat ili mishkata e cuknata:
 			sustoqnie = 'Pauza'
 
+		# If 0.3 seconds have elapsed since last shot and space is pressed
 		ako sled_posledno_strelqne > 0.3 i K_SPACE e natisnat:
+			# reset sled_posledne_strelqne
 			sled_posledno_strelqne = 0
+			# and shoot
 			strelqi()
 
+		# loop through the 'lazeri' group
 		za lazerche v lazeri:
+			# Get the position of the laser
 			poziciq_lazerche = poziciq na lazerche
+			# If position of laser is outside the window
 			ako poziciq_lazerche[1] - 20 < 0:
+				# Remove this laser
 				mahni lazerche
 			inache:
+				# Else move it up
 				mrudni lazerche s (0, skorost_lazer)
 
+		# If event RODI_VRAG is happening
 		ako subitie RODI_VRAG:
+			# Get a random x and y
 			sluchaino_x = sluchaino(30, SCREEN_WIDTH - 30)
 			sluchaino_y = sluchaino(-300, -50)
+			# and add a new ufo in 'vragove' and draw it
 			dobavi ufo v vragove i go plesni na (sluchaino_x, sluchaino_y)
+			# create a new animation for the new ufo
 			ufo_idle = nova animaciq na ufo ot assets/ufo
 
 		vragut_umre = greshno
+		# Loop through the 'vragove' group
 		za vrag v vragove:
+			# Get the position of the enemy
 			poziciq_vrag = poziciq na vrag
+			# Loop through the 'lazeri' group
 			za lazerche v lazeri:
+				# If laser and enemy have collided
 				ako lazerche se blusne s vrag:
+					# explode
 					dobavi exploziq v explozii i go plesni na (poziciq_vrag[0], poziciq_vrag[1])
 					exploziq_animaciq = nova animaciq na exploziq ot assets/explosion
 					# mahni vrag ot vragove
+					# Removing enemy and laser
 					mahni vrag
 					mahni lazerche
 					vragut_umre = vqrno
+					# Adding some points
 					tochki += 10
+					# Updating the score (removing, creating a new text object and drawing it)
 					mahni tochki_text
 					tochki_text = nov text 'Score:' + str(tochki) s font maluk_font i cvqt #ffffff
 					plesni tochki_text na (SCREEN_WIDTH - (len(str(tochki)) * 8 + 80), 20)
+					# break
 					prekrati
+			# Don't move enemy if he has died... dughh
 			ako vragut_umre:
 				vragut_umre = greshno
 				prekrati
+			# If the enemy has gotten to the player y it's gg
 			ako poziciq_vrag[1] > SCREEN_HEIGHT - 120:
 				sustoqnie = 'Krai'
+
+			# But if he hasn't died move him
 			mrudni vrag s (0, skorost_vrag)
 
+		# A bit of a trick here
+		# loop through the 'explozii' group
 		za exploziq v explozii:
+			# and if the index of the animation is 11 (the last image)
 			ako exploziq.index e 11:
+				# remove the explosion
 				mahni exploziq
+
+	# Now if the game's state is 'Nachalo' aka in menu
 	ako li puk sustoqnie e 'Nachalo':
+		# and the text is not drawn
 		ako ne igrai_text_plesnat:
+			# draw the text and buttons
 			igrai_text_plesnat = vqrno
 			plesni igrai_text na (CENTER[0], 200)
 			plesni igrai_buton na (CENTER[0] - 100, 500)
 			plesni izlez_buton na (CENTER[0] + 100, 500)
+		# if the play button is clicked or the return key is pressed
 		ako buton igrai_buton e kliknat ili K_RETURN e natisnat:
+			# start the clock (counting elapsed time in seconds)
 			pusni chasovnika
+			# hide the cursor
 			skrii kursora
+			# remove the text and buttons
 			mahni igrai_text
 			mahni igrai_buton
 			mahni izlez_buton
+			# set the state to 'Igra' aka playing
 			sustoqnie = 'Igra'
 			igrai_text_plesnat = greshno
+		# if esacpe is clicked quit the game
 		ako li puk buton izlez_buton e kliknat ili K_ESCAPE e natisnat:
 			krai na igrata
+	
+	# If state is 'Pauza' aka pause
 	ako li puk sustoqnie e 'Pauza':
+		# and if the pause text is not drawn
 		ako ne pauza_text_plesnat:
+			# pause the clock
 			pauzirai chasovnika
+			# show the cursor
 			pokazhi kursora
+			# rotate the player 90 degrees xD
 			zavurti igrach s 90 gradusa
+			# make the player bigger cuz why not :D
 			napravi igrach (100, 100)
+			# pause the music
 			pauzirai peeneto
 			pauza_text_plesnat = vqrno
+			# Draw the text and buttons
 			plesni pauza_text na (CENTER[0], 200)
 			plesni igrai_buton na (CENTER[0] - 100, 500)
 			plesni izlez_buton na (CENTER[0] + 100, 500)
+		# if the play button is clicked or the return key is pressed - unpause game
 		ako buton igrai_buton e kliknat ili K_RETURN e natisnat:
+			# unpause clock
 			pusni chasovnika
+			# show the cursor
 			skrii kursora
+			# unpause the music
 			otpauzirai peeneto
+			# remove the text and buttons
 			mahni pauza_text
 			mahni igrai_buton
 			mahni izlez_buton
+			# set the state to 'Igra' again
 			sustoqnie = 'Igra'
 			pauza_text_plesnat = greshno
+		# if the quit button is clicked - quit the game
 		ako li puk buton izlez_buton e kliknat:
 			krai na igrata
+
+	# If state is 'Krai' aka game over
 	ako li puk sustoqnie e 'Krai':
+		# and if the game over text is not drawn - draw the menu
 		ako ne krai_text_plesnat:
 			pokazhi kursora
 			q zemi se sopri s tva tvoe peene
@@ -192,27 +307,40 @@ osnoven cikul:
 			plesni krai_text na (CENTER[0], 200)
 			plesni igrai_buton na (CENTER[0] - 100, 500)
 			plesni izlez_buton na (CENTER[0] + 100, 500)
+		# if the play button is clicked or the return key is pressed
 		ako buton igrai_buton e kliknat ili K_RETURN e natisnat:
+			# choose and play a new music track
 			pei assets/music/" + str(sluchaino(1, 12)) + ".mp3
+			# hide the cursor
 			skrii kursora
 			krai_text_plesnat = greshno
+			# remove the text and buttons
 			mahni krai_text
 			mahni igrai_buton
 			mahni izlez_buton
 			# mahni igrach
+			# set the player to his initial position
 			mrudni igrach na (CENTER[0], SCREEN_HEIGHT - 100)
+			# reset the enemy speed
 			skorost_vragove = 3
+			# empty all the groups
 			izprazni grupa vragove
 			izprazni grupa lazeri
 			izprazni grupa explozii
+			# reset the score
 			tochki = 0
+			# update the score text
 			mahni tochki_text
 			tochki_text = nov text 'Score:0' s font maluk_font i cvqt #ffffff
 			plesni tochki_text na (SCREEN_WIDTH - 80, 20)
+			# reset the clock
 			nulirai chasovnika
+			# set the state to 'Igra' again
 			sustoqnie = 'Igra'
+		# If the quit button is clicked or the escape key is pressed - quit the game
 		ako li puk buton izlez_buton e kliknat ili K_ESCAPE e natisnat:
 			krai na igrata
 			
-
+# Uninitialize pygame and quit
+# always has to be the final line when creating a game with EBIGU
 dobra igra
