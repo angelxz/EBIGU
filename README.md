@@ -58,10 +58,11 @@ broqch = 0
 dokato vqrno:                  # while True
 	ako broqch e 31:
 		preskochi              # continue
-    ako li puk broqch e 100:
+	ako li puk broqch e 100:
 		schupi                 # break
-    inache:
+	inache:
 		izpishi(broqch)
+	broqch += 1
 ```
 Functions:
 ```eibgu
@@ -69,8 +70,8 @@ kato izvikam kvo_staa(na_kef_sum):       # def kvo_staa(na_kef_sum):
 	globalni nqkva_globalna_promenliva   # global nqkva_globalna_promenliva
 	ako na_kef_sum e vqrno:
 		izpishi('Na kef sum')
-    inache:
-		vurni                             # return
+	inache:
+		vurni                         # return
 ```
 Comments:
 ```eibgu
